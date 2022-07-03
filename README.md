@@ -16,6 +16,8 @@
 - [App Live Link](https://farida-hamid.github.io/Muvi-WebApp/)
 - [Video Demo](https://drive.google.com/file/d/1YgINmgDuNW5s2WAiRPYr1er2hAlFUZcT/view?usp=sharing)
 
+## Screenshot
+![Screenshot](final-desktop-screenshot.png)
 
 ## Getting Started
 
