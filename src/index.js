@@ -17,6 +17,7 @@ form.addEventListener('submit', (e) => {
   const searchTerm = search.value;
 
   if (searchTerm && searchTerm !== '') {
+    document.querySelector('#popular-section').innerHTML = '';
     getMovies(SEARCH_API + searchTerm);
 
     search.value = '';
