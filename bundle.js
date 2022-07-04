@@ -584,7 +584,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const addCommentToDom = (comments, ) => {
+const addCommentToDom = (comments) => {
   const commentList = document.querySelector('.comments-container');
   commentList.innerHTML = '';
   comments.forEach((comment) => {
@@ -704,17 +704,15 @@ const fetchComments = async (id) => {
 
   // display 0 comments if no comments were found
   if (!response.ok) {
-    displayCount.innerHTML = `0 comments`;
+    displayCount.innerHTML = '0 comments';
+    throw new Error('No comments added for this movie');
   }
   const recieveComment = await response.json();
   (0,_addcommentToDom_js__WEBPACK_IMPORTED_MODULE_0__["default"])(recieveComment);
 
   // display number of comments
   (0,_commentCounter_js__WEBPACK_IMPORTED_MODULE_1__["default"])(recieveComment).then((results) => {
-    if (!results.ok) {
-      displayCount.innerHTML = `${results} comments`;
-    }
-    
+    displayCount.innerHTML = `${results} comment(s)`;
   });
 };
 
@@ -735,6 +733,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getMovies": () => (/* binding */ getMovies)
 /* harmony export */ });
 /* harmony import */ var _display_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./display.js */ "./src/modules/display.js");
+/* harmony import */ var _movieCounter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./movieCounter.js */ "./src/modules/movieCounter.js");
+
 
 
 const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=24997fed86518e9d29afc6b7f7510f37&page=1';
@@ -748,7 +748,10 @@ async function getMovies(url) {
   (0,_display_js__WEBPACK_IMPORTED_MODULE_0__["default"])(data.results);
 
   const counter = document.querySelector('#count');
-  counter.innerHTML = `<p>We have ${data.results.length} movies 🎥 🍿</p>`;
+
+  (0,_movieCounter_js__WEBPACK_IMPORTED_MODULE_1__["default"])(data.results).then((response) => {
+    counter.innerHTML = `<p>We have ${response} movies 🎥 🍿</p>`;
+  });
 }
 
 /***/ }),
@@ -817,6 +820,22 @@ const likeFeature = () => {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (likeFeature);
+
+/***/ }),
+
+/***/ "./src/modules/movieCounter.js":
+/*!*************************************!*\
+  !*** ./src/modules/movieCounter.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const movieCount = async (movies) => movies.length;
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (movieCount);
 
 /***/ }),
 
@@ -1057,6 +1076,7 @@ form.addEventListener('submit', (e) => {
   const searchTerm = search.value;
 
   if (searchTerm && searchTerm !== '') {
+    document.querySelector('#popular-section').innerHTML = '';
     (0,_modules_getMovies_js__WEBPACK_IMPORTED_MODULE_3__.getMovies)(_modules_getMovies_js__WEBPACK_IMPORTED_MODULE_3__.SEARCH_API + searchTerm);
 
     search.value = '';
